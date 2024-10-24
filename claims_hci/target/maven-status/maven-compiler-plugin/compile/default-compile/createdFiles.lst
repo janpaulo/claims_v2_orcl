@@ -1,0 +1,11 @@
+com\hospital_name\claims_hci\method\account_roles\authentication.class
+com\hospital_name\claims_hci\method\account_roles\userAccounts.class
+com\hospital_name\claims_hci\CLAIMS.class
+com\hospital_name\claims_hci\structures\ClaimsResult.class
+com\hospital_name\claims_hci\structures\result\UserProfileResult.class
+com\hospital_name\claims_hci\method\account_roles\accountProfile.class
+com\hospital_name\claims_hci\structures\result\AccountRoleResult.class
+com\hospital_name\claims_hci\method\account_roles\roleAccounts.class
+com\hospital_name\claims_hci\structures\result\UserAccountResult.class
+com\hospital_name\claims_hci\utilities\ApplicationConfig.class
+com\hospital_name\claims_hci\utilities\Utility.class
