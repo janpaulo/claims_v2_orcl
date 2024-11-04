@@ -5,7 +5,11 @@
  */
 package com.hospital_name.claims_hci;
 
+import com.hospital_name.claims_hci.method.account_roles.accountProfile;
 import com.hospital_name.claims_hci.method.account_roles.authentication;
+import com.hospital_name.claims_hci.method.account_roles.roleAccounts;
+import com.hospital_name.claims_hci.method.claims.ClaimsMethod;
+import com.hospital_name.claims_hci.method.esoa.EsoaMethod;
 import com.hospital_name.claims_hci.structures.ClaimsResult;
 import com.hospital_name.claims_hci.utilities.Utility;
 import javax.annotation.Resource;
@@ -36,6 +40,22 @@ public class CLAIMS {
     
     @Inject
     private authentication authentication;
+    
+    
+    @Inject
+    private ClaimsMethod claimsMethod;
+    
+    @Inject
+    private accountProfile profile;
+    
+    @Inject
+    private roleAccounts roleAccounts;
+    
+    
+    @Inject
+    private EsoaMethod esoaMethod;
+    
+    
 
     @EJB
     private Utility utility;
@@ -54,5 +74,72 @@ public class CLAIMS {
     public ClaimsResult authentication(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password, String strRequest) {
         return this.authentication.authentication(this.claimsDS, userID, password, strRequest);
     }
+    
+    /////////////////////// CLAIMS //////////////////////////////////////
+    @GET
+    @Path("GetClaims/{claimID: .*}")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult ClaimsMethod(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password,@PathParam("claimID") String claimID) {
+        return this.claimsMethod.getClaim(this.claimsDS, userID, password, claimID);
+    }
+    
+    @POST
+    @Path("InsertClaims")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult AddClaim(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password, String strRequest) {
+        return this.claimsMethod.AddClaim(this.claimsDS, userID, password, strRequest);
+    }
+    
+    @POST
+    @Path("UpdateClaims")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult updateClaim(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password,String strRequest) {
+        return this.claimsMethod.updateClaim(this.claimsDS, userID, password, strRequest);
+    }
+    
+    
+    ///////////////////////-------------------------------- ESOA  //////////////////////////////////////
+    @GET
+    @Path("GetEsoa/{esoaID: .*}")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult getEsoa(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password,@PathParam("esoaID") String esoaID) {
+        return this.esoaMethod.getEsoa(this.claimsDS, userID, password, esoaID);
+    }
+    
+    
+    //////////////////////////////////////////////////////////// USER PROFILE  //////////////////////////////////////
+    @GET
+    @Path("GetUserProfile/{UserID: .*}")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult getUserProfile(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password,@PathParam("UserID") String UserID) {
+        return this.profile.getUserProfile(this.claimsDS, userID, password, UserID);
+    }
+    
+    
+    
+    
+    ///////////////////////-------------------------------- USER ROLE  //////////////////////////////////////
+    @GET
+    @Path("GetUserRole/{roleID: .*}")
+    @Consumes({"application/json"})
+    @Produces({"application/json"})
+    public ClaimsResult getUserRole(@HeaderParam("UserID") String userID, @HeaderParam("Password") String password,@PathParam("roleID") String roleID) {
+        return this.roleAccounts.getUserRole(this.claimsDS, userID, password, roleID);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

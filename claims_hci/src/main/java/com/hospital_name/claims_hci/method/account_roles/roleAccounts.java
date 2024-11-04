@@ -1,17 +1,4 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package com.hospital_name.claims_hci.method.account_roles;
-//
-///**
-// *
-// * @author User
-// */
-//public class roleAccounts {
-//    
-//}
+
 package com.hospital_name.claims_hci.method.account_roles;
 
 import com.hospital_name.claims_hci.structures.ClaimsResult;
@@ -73,18 +60,15 @@ public class roleAccounts {
     }
 
     // Get Account Role
-    public ClaimsResult getUserProfile(DataSource ds, String userID, String password, String strRequest) {
+    public ClaimsResult getUserRole(DataSource ds, String userID, String password, String strRequest) {
         ArrayList<AccountRoleResult> list = new ArrayList<>();
         ClaimsResult result = this.utility.ClaimsResult();
 
         try (Connection connection = ds.getConnection(userID, password);
-                CallableStatement statement = connection.prepareCall("begin :lib := claims_pkg.AccountRoleResult(?); end;")) {
-
-            AccountRoleResult request = new AccountRoleResult();
-            request = utility.ObjectMapper().readValue(strRequest, AccountRoleResult.class);
+                CallableStatement statement = connection.prepareCall("begin :lib := claims.claims_pkg.get_account_roles(:p_role_id); end;")) {
 
             statement.registerOutParameter("lib", OracleTypes.CURSOR);
-            statement.setString(1, request.getRoleID());
+            statement.setString("p_role_id", strRequest);
             statement.execute();
 
             try (ResultSet resultSet = (ResultSet) statement.getObject("lib")) {
@@ -102,6 +86,7 @@ public class roleAccounts {
 
             if (list.isEmpty()) {
                 result.setSuccess(false);
+                result.setResult("[]");
                 result.setMessage("NO RECORD FOUND");
             } else {
                 result.setMessage("SUCCESSFULLY FOUND THE RECORD/S");

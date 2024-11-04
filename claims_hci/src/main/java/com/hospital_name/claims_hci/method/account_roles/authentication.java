@@ -6,7 +6,6 @@
 package com.hospital_name.claims_hci.method.account_roles;
 
 import com.hospital_name.claims_hci.structures.ClaimsResult;
-import com.hospital_name.claims_hci.structures.result.AccountRoleResult;
 import com.hospital_name.claims_hci.structures.result.UserAccountResult;
 import com.hospital_name.claims_hci.utilities.Utility;
 import java.io.IOException;

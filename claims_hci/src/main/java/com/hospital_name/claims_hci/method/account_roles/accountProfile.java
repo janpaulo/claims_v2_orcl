@@ -117,13 +117,10 @@ public class accountProfile {
         ClaimsResult result = this.utility.ClaimsResult();
 
         try (Connection connection = ds.getConnection(userID, password);
-                CallableStatement statement = connection.prepareCall("begin :lib := claims_pkg.get_user_profile(?); end;")) {
-
-            UserProfileResult request = new UserProfileResult();
-            request = utility.ObjectMapper().readValue(strRequest, UserProfileResult.class);
+                CallableStatement statement = connection.prepareCall("begin :lib := claims.claims_pkg.get_user_profile(:p_user_id); end;")) {
 
             statement.registerOutParameter("lib", OracleTypes.CURSOR);
-            statement.setString(1, request.getUserID());
+            statement.setString("p_user_id", strRequest);
             statement.execute();
 
             try (ResultSet resultSet = (ResultSet) statement.getObject("lib")) {
@@ -142,6 +139,7 @@ public class accountProfile {
 
             if (list.isEmpty()) {
                 result.setSuccess(false);
+                result.setResult("[]");
                 result.setMessage("NO RECORD FOUND");
             } else {
                 result.setMessage("SUCCESSFULLY FOUND THE RECORD/S");
